@@ -1,7 +1,4 @@
-﻿using GameSealZadanie.Domain.Entities;
-using GameSealZadanie.Domain.Http;
-using GameSealZadanie.WebAPI.Helpers;
-using GameSealZadanie.WebAPI.Repositories.Home;
+﻿using GameSealZadanie.WebAPI.Repositories.Home;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GameSealZadanie.WebAPI.Controllers;
@@ -14,34 +11,32 @@ public class ProductsController(IProducts homeBusinessLogic, ILogger<ProductsCon
     private readonly ILogger _logger = logger;
 
     [HttpPost("FetchProductsFromCodesWholeSaleToDatabaseAsync")]
-    public async Task<HttpResult> FetchProductsFromCodesWholeSaleToDatabaseAsync()
+    public async Task<ActionResult> FetchProductsFromCodesWholeSaleToDatabaseAsync()
     {
         try
         {
             await _homeBusinessLogic.FetchProductsFromCodesWholeSaleToDatabaseAsync();
-
-            return HttpHelper.Ok("Pomyślnie pobrano produkty");
+            return Ok("Pomyślnie pobrano produkty");
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Wystąpił błąd w pobraniu produktu");
-            return HttpHelper.Error(ex);
+            _logger.LogError(ex, "Wystąpił błąd w pobraniu produktów");
+            return Problem(ex.Message);
         }
     }
 
     [HttpGet("GetProductByExternalId")]
-    public async Task<HttpResultT<Product?>> GetProductByExternalId(string externalId)
+    public async Task<ActionResult> GetProductByExternalId(string externalId)
     {
         try
         {
             var result = await _homeBusinessLogic.GetProductByExternalId(externalId);
-
-            return HttpHelper.Ok(result);
+            return Ok(result);
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Wystąpił błąd w znalezieniu produktu");
-            return HttpHelper.Error<Product?>(ex);
+            return Problem(ex.Message);
         }
     }
 }

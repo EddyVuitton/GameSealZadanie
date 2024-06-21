@@ -23,7 +23,7 @@ public class Products(IHttpClientFactory httpClientFactory, IConfiguration confi
         var products = await GetAllProductsFromCodesWholeSaleAsync();
         var existingProducts = await GetAllProductsFromDatabaseAsync();
 
-        if (products is not null && products?.Items?.Count > 0)
+        if (products is not null && products.Items?.Count > 0)
         {
             //Usuwanie wszystkich wpisów, aby dodać je później na nowo
             if (existingProducts is not null)
@@ -35,24 +35,24 @@ public class Products(IHttpClientFactory httpClientFactory, IConfiguration confi
 
             foreach (var product in products.Items)
             {
-                var badges = product?.Badges?.Select(x => new Badge()
+                var badges = product.Badges?.Select(x => new Badge()
                 {
                     Name = x.Name ?? string.Empty,
                     Slug = x.Slug ?? string.Empty,
                 }).ToList();
 
-                var images = product?.Images?.Select(x => new Image()
+                var images = product.Images?.Select(x => new Image()
                 {
                     Format = x.Format ?? string.Empty,
                     ImageUrl = x.Image ?? string.Empty
                 }).ToList();
 
-                var languages = product?.Languages?.Select(x => new Language()
+                var languages = product.Languages?.Select(x => new Language()
                 {
                     LanguageName = x
                 }).ToList();
 
-                var links = product?.Links?.Select(x => new Link()
+                var links = product.Links?.Select(x => new Link()
                 {
                     Deprecation = x.Deprecation ?? string.Empty,
                     Href = x.Href ?? string.Empty,
@@ -64,25 +64,25 @@ public class Products(IHttpClientFactory httpClientFactory, IConfiguration confi
                     Type = x.Type ?? string.Empty
                 }).ToList();
 
-                var prices = product?.Prices?.Select(x => new Price()
+                var prices = product.Prices?.Select(x => new Price()
                 {
                     From = x.From ?? default,
                     To = x.To,
                     Value = x.Value ?? default
                 }).ToList();
 
-                var regions = product?.Regions?.Select(x => new Region()
+                var regions = product.Regions?.Select(x => new Region()
                 {
                     RegionName = x
                 }).ToList();
 
                 newProductList.Add(new Product()
                 {
-                    Identifier = product?.Identifier,
-                    Name = product?.Name,
-                    Platform = product?.Platform,
-                    Quantity = product?.Quantity ?? default,
-                    ExternalProductId = product?.ProductId ?? string.Empty,
+                    Identifier = product.Identifier,
+                    Name = product.Name,
+                    Platform = product.Platform,
+                    Quantity = product.Quantity ?? default,
+                    ExternalProductId = product.ProductId ?? string.Empty,
                     Badges = badges ?? [],
                     Images = images ?? [],
                     Languages = languages ?? [],
